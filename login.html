@@ -1,44 +1,3 @@
-<?php
-// Memulai atau melanjutkan session yang ada
-session_start();
-
-// Menyertakan kode dari file koneksi
-include "koneksi.php";
-
-
-
-// Memproses data jika form dikirim menggunakan metode POST
-if ($_SERVER["REQUEST_METHOD"] == "POST") {
-  $username = trim($_POST['user']);
-  $password = trim($_POST['pass']);
-
-  $password = md5($_POST['pass']);
-
-  // Menggunakan prepared statement untuk menghindari SQL Injection
-  $stmt = $conn->prepare("SELECT username 
-                          FROM user 
-                          WHERE username=? AND password=?");
-  $stmt->bind_param("ss", $username, $password); // Binding parameter
-  $stmt->execute(); // Menjalankan statement
-  $hasil = $stmt->get_result(); // Menyimpan hasil
-  $row = $hasil->fetch_array(MYSQLI_ASSOC); // Mengambil baris hasil
-
-  // Memeriksa apakah user ditemukan
-  if (!empty($row)) {
-    // Jika ditemukan, simpan username di session
-    $_SESSION['username'] = $row['username'];
-    header("location:admin.php"); // Arahkan ke halaman admin
-    exit();
-  } else {
-    // Jika tidak ditemukan, arahkan kembali ke halaman login dengan pesan error
-    $error = "Username atau password salah!";
-  }
-
-  $stmt->close(); // Menutup statement
-  $conn->close(); // Menutup koneksi
-}
-?>
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -57,10 +16,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     }
     .login-container {
       background-color: rgb(122, 164, 253);
-      padding: 35px;
+      padding: 40px;
       border-radius: 8px;
       box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-      width: 350px;
+      width: 300px;
     }
     .login-container h2 {
       margin-bottom: 20px;
@@ -72,14 +31,14 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     }
     .form-group label {
       display: block;
-      margin-bottom: 9px;
+      margin-bottom: 5px;
       font-weight: bold;
     }
     .form-group input {
-      width: 95%;
+      width: 100%;
       padding: 10px;
       border: 1px solid #ddd;
-      border-radius: 8px;
+      border-radius: 4px;
     }
     .form-group input:focus {
       border-color: #007BFF;
@@ -90,7 +49,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
       padding: 10px;
       background-color:rgb(15, 50, 54);
       border: none;
-      border-radius: 8px;
+      border-radius: 4px;
       color: #fff;
       font-weight: bold;
       cursor: pointer;
@@ -108,13 +67,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 </head>
 <body>
   <div class="login-container">
-    <h2 class="text-center">L O G I N</h2>
-    <?php
-    // Menampilkan pesan error jika ada
-    if (!empty($error)) {
-      echo "<div class='error'>$error</div>";
-    }
-    ?>
+    <h2>L O G I N</h2>
     <form action="" method="post">
       <div class="form-group">
         <label for="user">Username</label>
@@ -124,7 +77,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         <label for="pass">Password</label>
         <input type="password" id="pass" name="pass" required>
       </div>
-      <button class="btn text-center gap-2 col-6 mx-auto" type="submit">Login</button>
+      <button class="btn" type="submit">Login</button>
     </form>
   </div>
 </body>

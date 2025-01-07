@@ -2,9 +2,9 @@
 date_default_timezone_set('Asia/Jakarta');
 
 $servername = "localhost";
-$username = "pbw";
-$password = "lbi";
-$db = "webdailjournal"; //nama database
+$username = "root";
+$password = "";
+$db = "webadailyjournal"; //nama database
 
 //create connection
 $conn = new mysqli($servername,$username,$password,$db);

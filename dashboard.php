@@ -36,7 +36,7 @@ $jumlah_article = $hasil1->num_rows;
                         <h5 class="card-title"><i class="bi bi-camera"></i> Gallery</h5> 
                     </div>
                     <div class="p-3">
-                        <span class="badge rounded-pill text-bg-danger fs-2"><?php //echo $jumlah_gallery; ?></span>
+                        <span class="badge rounded-pill text-bg-danger fs-2"><?php echo $jumlah_article; ?></span>
                     </div> 
                 </div>
             </div>
