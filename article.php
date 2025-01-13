@@ -130,6 +130,7 @@ if (isset($_POST['hapus'])) {
     </button>
     <div class="row">
         <div class="table-responsive" id="article_data">
+        <div class="table-responsive" id="article_data">
             <table class="table table-hover">
                 <thead class="table-dark">
                     <tr>
@@ -142,37 +143,43 @@ if (isset($_POST['hapus'])) {
                 </thead>
                 <tbody>
                     <?php
+                    include "koneksi.php";
                     $sql = "SELECT * FROM articles ORDER BY tanggal DESC";
                     $hasil = $conn->query($sql);
-
                     $no = 1;
-                    while ($row = $hasil->fetch_assoc()) {
+
+                    $hlm = (isset($_POST['hlm'])) ? $_POST['hlm'] : 1;
+                    $limit = 3;
+                    $limit_start = ($hlm - 1) * $limit;
+                    $no = $limit_start + 1;
+
+                    $sql = "SELECT * FROM articles ORDER BY tanggal DESC LIMIT $limit_start, $limit";
+                    $hasil = $conn->query($sql);
+
+                    
+
+                    while ($row = $hasil->fetch_assoc()) :
                     ?>
                         <tr>
                             <td><?= $no++ ?></td>
                             <td>
-                                <strong><?= $row["judul"] ?></strong>
-                                <br>pada : <?= $row["tanggal"] ?>
-                                <br>oleh : <?= $row["username"] ?>
+                                <strong><?= htmlspecialchars($row["judul"]) ?></strong>
+                                <br>pada : <?= htmlspecialchars($row["tanggal"]) ?>
+                                <br>oleh : <?= htmlspecialchars($row["username"]) ?>
                             </td>
-                            <td><?= $row["isi"] ?></td>
+                            <td><?= htmlspecialchars($row["isi"]) ?></td>
                             <td>
-                                <?php
-                                if ($row["gambar"] != '') {
-                                    if (file_exists('img/' . $row["gambar"] . '')) {
-                                ?>
-                                        <img src="img/<?= $row["gambar"] ?>" width="100">
-                                <?php
-                                    }
-                                }
-                                ?>
+                                <?php if (!empty($row["gambar"]) && file_exists("img/{$row["gambar"]}")) : ?>
+                                    <img src="img/<?= htmlspecialchars($row["gambar"]) ?>" width="100" alt="Gambar Artikel">
+                                <?php endif; ?>
                             </td>
                             <td>
-                                <!-- untuk tombol aksi update dan delete -->
-                            </td>
-                            <td>
-                                <button title="edit" class="badge rounded-pill text-bg-success" data-bs-toggle="modal" data-bs-target="#modalEdit<?= $row["id"] ?>"><i class="bi bi-pencil"></i></button>
-                                <a href="#" title="delete" class="badge rounded-pill text-bg-danger" data-bs-toggle="modal" data-bs-target="#modalHapus<?= $row["id"] ?>"><i class="bi bi-x-circle"></i></a>
+                                <button title="edit" class="badge rounded-pill text-bg-success" data-bs-toggle="modal" data-bs-target="#modalEdit<?= $row["id"] ?>">
+                                    <i class="bi bi-pencil"></i>
+                                </button>
+                                <a href="#" title="delete" class="badge rounded-pill text-bg-danger" data-bs-toggle="modal" data-bs-target="#modalHapus<?= $row["id"] ?>">
+                                    <i class="bi bi-x-circle"></i>
+                                </a>
                             </td>
                             <!-- Awal Modal Edit -->
                             <div class="modal fade" id="modalEdit<?= $row["id"] ?>" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
@@ -247,12 +254,78 @@ if (isset($_POST['hapus'])) {
                             </div>
                             <!-- Akhir Modal Hapus -->
                         </tr>
-                    <?php
-                    }
-                    ?>
+
+                        <!-- Modal Edit -->
+                        <div class="modal fade" id="modalEdit<?= $row["id"] ?>" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="modalEditLabel<?= $row["id"] ?>" aria-hidden="true">
+                            <div class="modal-dialog">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title" id="modalEditLabel<?= $row["id"] ?>">Edit Artikel</h5>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                    </div>
+                                    <form method="post" action="" enctype="multipart/form-data">
+                                        <div class="modal-body">
+                                            <input type="hidden" name="id" value="<?= $row["id"] ?>">
+                                            <div class="mb-3">
+                                                <label for="judul" class="form-label">Judul</label>
+                                                <input type="text" class="form-control" name="judul" value="<?= htmlspecialchars($row["judul"]) ?>" required>
+                                            </div>
+                                            <div class="mb-3">
+                                                <label for="isi" class="form-label">Isi</label>
+                                                <textarea class="form-control" name="isi" required><?= htmlspecialchars($row["isi"]) ?></textarea>
+                                            </div>
+                                            <div class="mb-3">
+                                                <label for="gambar" class="form-label">Ganti Gambar</label>
+                                                <input type="file" class="form-control" name="gambar">
+                                            </div>
+                                            <div class="mb-3">
+                                                <label for="gambar_lama" class="form-label">Gambar Lama</label>
+                                                <?php if (!empty($row["gambar"]) && file_exists("img/{$row["gambar"]}")) : ?>
+                                                    <br><img src="img/<?= htmlspecialchars($row["gambar"]) ?>" width="100" alt="Gambar Lama">
+                                                <?php endif; ?>
+                                                <input type="hidden" name="gambar_lama" value="<?= htmlspecialchars($row["gambar"]) ?>">
+                                            </div>
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                            <button type="submit" name="simpan" class="btn btn-primary">Simpan</button>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Akhir Modal Edit -->
+
+                        <!-- Modal Hapus -->
+                        <div class="modal fade" id="modalHapus<?= $row["id"] ?>" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="modalHapusLabel<?= $row["id"] ?>" aria-hidden="true">
+                            <div class="modal-dialog">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title" id="modalHapusLabel<?= $row["id"] ?>">Konfirmasi Hapus Artikel</h5>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                    </div>
+                                    <form method="post" action="">
+                                        <div class="modal-body">
+                                            <p>Yakin akan menghapus artikel "<strong><?= htmlspecialchars($row["judul"]) ?></strong>"?</p>
+                                            <input type="hidden" name="id" value="<?= $row["id"] ?>">
+                                            <input type="hidden" name="gambar" value="<?= htmlspecialchars($row["gambar"]) ?>">
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
+                                            <button type="submit" name="hapus" class="btn btn-danger">Hapus</button>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Akhir Modal Hapus -->
+                    <?php endwhile; ?>
                 </tbody>
             </table>
+
         </div>
+
+        
 
         
                 <!-- Awal Modal Tambah-->
@@ -289,6 +362,7 @@ if (isset($_POST['hapus'])) {
         <!-- Akhir Modal Tambah-->
     </div>
 </div>
+
 <script>
 $(document).ready(function(){
     load_data();
@@ -303,31 +377,10 @@ $(document).ready(function(){
                     $('#article_data').html(data);
             }
         })
-        $(document).on('click', '.halaman', function(){
-        var hlm = $(this).attr("id");
-        load_data(hlm);
-});
     } 
+    $(document).on('click', '.halaman', function(){
+    var hlm = $(this).attr("id");
+    load_data(hlm);
+    });
 });
 </script>
-<nav aria-label="Page navigation example">
-  <ul class="pagination">
-    <li class="page-item">
-      <a class="page-link" href="#" aria-label="Previous">
-        <span aria-hidden="true">&laquo;</span>
-        <span class="sr-only">Previous</span>
-      </a>
-    </li>
-    <li class="page-item"><a class="page-link" href="#">1</a></li>
-    <li class="page-item"><a class="page-link" href="#">2</a></li>
-    <li class="page-item"><a class="page-link" href="#">3</a></li>
-    <li class="page-item">
-      <a class="page-link" href="#" aria-label="Next">
-        <span aria-hidden="true">&raquo;</span>
-        <span class="sr-only">Next</span>
-      </a>
-    </li>
-  </ul>
-</nav>
-
-

@@ -58,6 +58,9 @@ include "koneksi.php";
                     <li class="nav-item"><a class="nav-link active" href="index.php">Home</a></li>
                     <li class="nav-item"><a class="nav-link" href="article_user.php">Article</a></li>
                     <li class="nav-item"><a class="nav-link" href="gallery_user.php">Gallery</a></li>
+                    <li class="nav-item">
+                      <a href="login.php" class="btn btn-primary">LOGIN</a>
+                  </li>
             </ul>
                 <div class="d-flex">
                     <button id="darkMode" class="btn btn-secondary m-2"><i class="bi bi-moon-stars-fill"></i></button>

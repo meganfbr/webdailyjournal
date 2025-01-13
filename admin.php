@@ -12,20 +12,18 @@ if (!isset($_SESSION['username'])) {
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
     <title>My Daily Journal | Admin</title>
-    <link rel="icon" href="img/logo.png" />
+    <link rel="icon" href="img/logo.png"/>
     <link
     rel="stylesheet"
-    href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css"
-    />
+    href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css"/>
     <link
     href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"
     rel="stylesheet"
     integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN"
-    crossorigin="anonymous"
-    /> 
+    crossorigin="anonymous"/> 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
     <style>  
         html {
@@ -45,7 +43,6 @@ if (!isset($_SESSION['username'])) {
 </head>
 <body>
     <!-- nav begin -->
-    
 <nav class="navbar navbar-expand-sm bg-body-tertiary sticky-top bg-primary-subtle">
     <div class="container">
         <a class="navbar-brand" target="_blank" href=".">My Daily Journal</a>
@@ -56,8 +53,7 @@ if (!isset($_SESSION['username'])) {
         data-bs-target="#navbarSupportedContent"
         aria-controls="navbarSupportedContent"
         aria-expanded="false"
-        aria-label="Toggle navigation"
-        >
+        aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
         </button>
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
@@ -79,7 +75,7 @@ if (!isset($_SESSION['username'])) {
         </ul>
         </div>
     </div>
-</nav>>
+</nav>
 <section id="content" class="p-5">
     <div class="container">
         <?php
@@ -108,14 +104,21 @@ if (!isset($_SESSION['username'])) {
                 <a href="https://github.com/meganfbr"><i class="bi bi-github h2 p-2 text-dark"></i></a>
         </div>
         <div>@mgnfbr &copy; 2024</div>
+    <footer class="text-center p-7 bg-primary-subtle">
+        <br>
+        <div>
+            <a href="https://www.instagram.com/fbrnhae/profilecard/?igsh=NzdtMmswaTgxMDFy"><i
+                    class="bi bi-instagram h2 p-2 text-dark"></i></a>
+            <hef="https://twitter.com/udinusofficial"><i class="bi bi-twitter h2 p-2 text-dark"></i></a>
+                <a href="https://github.com/meganfbr"><i class="bi bi-github h2 p-2 text-dark"></i></a>
+        </div>
+        <div>@mgnfbr &copy; 2024</div>
     </footer>
     <!-- footer end -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL"
         crossorigin="anonymous"></script>
-    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
-        integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
-        crossorigin="anonymous"></script>
+  
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.12.9/dist/umd/popper.min.js"
         integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
         crossorigin="anonymous"></script>
